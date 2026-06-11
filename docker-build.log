@@ -1,0 +1,6 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+#1 [internal] load local bake definitions
+#1 reading from stdin 963B done
+#1 DONE 0.0s
+EOF
+

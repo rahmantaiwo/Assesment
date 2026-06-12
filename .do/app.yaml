@@ -19,8 +19,10 @@ services:
         preserve_path_prefix: true
     envs:
       - key: NODE_ENV
+        scope: RUN_TIME
         value: production
       - key: JWT_EXPIRES
+        scope: RUN_TIME
         value: 7d
       # Set the secrets below in the DO dashboard (mark each as "Encrypted"):
       - key: MONGO_URI
@@ -53,6 +55,7 @@ static_sites:
       deploy_on_push: true
     build_command: npm run build
     output_dir: dist
+    catchall_document: index.html
     routes:
       - path: /
     envs:

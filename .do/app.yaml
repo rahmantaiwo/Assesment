@@ -1,0 +1,61 @@
+name: assessment
+region: nyc
+
+services:
+  - name: backend
+    dockerfile_path: product-listing-backend/Dockerfile
+    source_dir: product-listing-backend
+    github:
+      repo: rahmantaiwo/Assesment
+      branch: main
+      deploy_on_push: true
+    http_port: 5000
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    instance_count: 1
+    health_check:
+      http_path: /health
+    routes:
+      - path: /api
+        preserve_path_prefix: true
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_EXPIRES
+        value: 7d
+      # Set the secrets below in the DO dashboard (mark each as "Encrypted"):
+      - key: MONGO_URI
+        scope: RUN_TIME
+        type: SECRET
+        value: REPLACE_WITH_ATLAS_CONNECTION_STRING
+      - key: JWT_SECRET
+        scope: RUN_TIME
+        type: SECRET
+        value: REPLACE_WITH_LONG_RANDOM_SECRET
+      - key: CLOUDINARY_CLOUD_NAME
+        scope: RUN_TIME
+        type: SECRET
+        value: REPLACE_ME
+      - key: CLOUDINARY_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+        value: REPLACE_ME
+      - key: CLOUDINARY_API_SECRET
+        scope: RUN_TIME
+        type: SECRET
+        value: REPLACE_ME
+
+static_sites:
+  - name: frontend
+    source_dir: frontend
+    github:
+      repo: rahmantaiwo/Assesment
+      branch: main
+      deploy_on_push: true
+    build_command: npm run build
+    output_dir: dist
+    routes:
+      - path: /
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: BUILD_TIME
+        value: /api
